@@ -1,5 +1,6 @@
 rootProject.name = "rmq"
 
 include(
-    "app"
+    "app",
+    ":modules:domain"
 )
