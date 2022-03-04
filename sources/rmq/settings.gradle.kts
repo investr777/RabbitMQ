@@ -1,6 +1,7 @@
 rootProject.name = "rmq"
 
 include(
-    "app",
-    ":modules:domain"
+    "app-border-validator",
+    ":modules:cmn-domain",
+    ":modules:cmn-rabbitmq"
 )
