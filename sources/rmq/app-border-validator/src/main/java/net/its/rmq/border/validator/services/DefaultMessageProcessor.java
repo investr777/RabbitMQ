@@ -15,8 +15,8 @@ import java.io.IOException;
 public class DefaultMessageProcessor implements MessageProcessor {
 
     private final ObjectMapper objectMapper;
-    private final BorderCorridorService carBorderCorridorService;
-    private final BorderCorridorService personBorderCorridorService;
+    private final BorderCorridorService<Car> carBorderCorridorService;
+    private final BorderCorridorService<Person> personBorderCorridorService;
 
     @Override
     public void process(byte[] message) {
@@ -25,9 +25,9 @@ public class DefaultMessageProcessor implements MessageProcessor {
             val migrant = objectMapper.readValue(message, Migrant.class);
 
             if (migrant instanceof Car) {
-                carBorderCorridorService.pass(migrant);
+                carBorderCorridorService.pass((Car) migrant);
             } else if (migrant instanceof Person) {
-                personBorderCorridorService.pass(migrant);
+                personBorderCorridorService.pass((Person) migrant);
             } else
                 throw new MessageProcessorException("No appropriate border corridor service for " + migrant.getClass().getSimpleName());
         } catch (IOException ex) {
