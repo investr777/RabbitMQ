@@ -1,9 +1,7 @@
-package net.its.rmq.border.validator.config;
+package net.its.rmq.cmn.rabbitmq.config;
 
 import com.rabbitmq.client.ConnectionFactory;
-import lombok.extern.slf4j.Slf4j;
 import net.its.rmq.cmn.rabbitmq.MessageProcessor;
-import net.its.rmq.cmn.rabbitmq.config.RabbitmqProperties;
 import net.its.rmq.cmn.rabbitmq.consumer.factory.DefaultMessageConsumerFactory;
 import net.its.rmq.cmn.rabbitmq.consumer.factory.MessageConsumerFactory;
 import net.its.rmq.cmn.rabbitmq.pool.DefaultRabbitmqChannelPool;
@@ -12,10 +10,22 @@ import net.its.rmq.cmn.rabbitmq.publisher.DefaultMessagePublisher;
 import net.its.rmq.cmn.rabbitmq.publisher.MessagePublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 @Configuration
-@Slf4j
 public class RabbitmqConfig {
+
+    @Bean
+    RabbitmqProperties rabbitmqProperties(Environment env) {
+
+        return RabbitmqProperties.builder()
+            .host(env.getRequiredProperty("RABBITMQ_HOST"))
+            .port(env.getRequiredProperty("RABBITMQ_PORT", Integer.class))
+            .username(env.getRequiredProperty("RABBITMQ_USERNAME"))
+            .password(env.getRequiredProperty("RABBITMQ_PASSWORD"))
+            .build();
+    }
+
 
     @Bean
     ConnectionFactory connectionFactory(RabbitmqProperties prop) {

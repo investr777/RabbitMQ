@@ -1,11 +1,18 @@
 package deps;
 
+import static deps.ExternalDeps.Versions.springBom;
+
 public class ExternalDeps {
 
-    // spring-version is configured under 'buildSrc/build.gradle.kts'
     public static class Spring {
 
-        public static String starter = "org.springframework.boot:spring-boot-starter";
+        public static String bom = "org.springframework.boot:spring-boot-dependencies:" + springBom;
+
+        // spring-version is configured via bom
+        public static class Bom {
+            public static String starter = "org.springframework.boot:spring-boot-starter";
+            public static String context = "org.springframework:spring-context";
+        }
     }
 
     public static String rabbitmq = "com.rabbitmq:amqp-client:" + Versions.rabbitmq;
@@ -13,6 +20,8 @@ public class ExternalDeps {
     public static String jackson = "com.fasterxml.jackson.core:jackson-databind:" + Versions.jackson;
 
     public static class Versions {
+
+        static String springBom = "2.6.4";
 
         static String rabbitmq = "5.14.2";
 

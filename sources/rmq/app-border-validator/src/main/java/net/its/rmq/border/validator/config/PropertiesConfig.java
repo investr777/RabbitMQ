@@ -9,29 +9,18 @@ import org.springframework.core.env.Environment;
 @Configuration
 public class PropertiesConfig {
 
-    @Autowired
-    private Environment env;
-
     @Bean
-    BorderValidatorProperties borderValidatorProperties() {
+    BorderValidatorProperties borderValidatorProperties(
+        Environment env,
+        RabbitmqProperties rabbitmqProperties
+    ) {
 
         return BorderValidatorProperties.builder()
-            .rabbitmqProperties(rabbitmqProperties())
+            .rabbitmqProperties(rabbitmqProperties)
             .incomingQueue(env.getRequiredProperty("INCOMING_QUEUE_NAME"))
             .borderCorridorExchange(env.getRequiredProperty("BORDER_CORRIDOR_EXCHANGE"))
             .personRoutingKey(env.getRequiredProperty("PERSON_ROUTING_KEY"))
             .carRoutingKey(env.getRequiredProperty("CAR_ROUTING_KEY"))
-            .build();
-    }
-
-    @Bean
-    RabbitmqProperties rabbitmqProperties() {
-
-        return RabbitmqProperties.builder()
-            .host(env.getRequiredProperty("RABBITMQ_HOST"))
-            .port(env.getRequiredProperty("RABBITMQ_PORT", Integer.class))
-            .username(env.getRequiredProperty("RABBITMQ_USERNAME"))
-            .password(env.getRequiredProperty("RABBITMQ_PASSWORD"))
             .build();
     }
 }
