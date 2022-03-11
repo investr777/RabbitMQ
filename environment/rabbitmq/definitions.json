@@ -1,0 +1,104 @@
+{
+  "rabbit_version": "3.9.13",
+  "rabbitmq_version": "3.9.13",
+  "product_name": "RabbitMQ",
+  "product_version": "3.9.13",
+  "vhosts": [ { "name": "/" } ],
+  "topic_permissions": [ ],
+  "parameters": [ ],
+  "global_parameters": [ { "name": "internal_cluster_id", "value": "rabbitmq-cluster-id-KSt88RjXyoIny03fQVaTVQ" } ],
+  "policies": [ ],
+  "queues": [
+    {
+      "name": "person",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-dead-letter-exchange": "unknown", "x-queue-type": "classic" }
+    },
+    {
+      "name": "incoming",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-dead-letter-exchange": "unknown", "x-queue-type": "classic" }
+    },
+    {
+      "name": "car",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-dead-letter-exchange": "unknown", "x-queue-type": "classic" }
+    },
+    {
+      "name": "unknown",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-message-ttl": 86400000, "x-queue-type": "classic" }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "unknown",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": { }
+    },
+    {
+      "name": "incoming",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": { }
+    },
+    {
+      "name": "border_corridor",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": { }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "border_corridor",
+      "vhost": "/",
+      "destination": "car",
+      "destination_type": "queue",
+      "routing_key": "car.*",
+      "arguments": { }
+    },
+    {
+      "source": "border_corridor",
+      "vhost": "/",
+      "destination": "person",
+      "destination_type": "queue",
+      "routing_key": "person.*",
+      "arguments": { }
+    },
+    {
+      "source": "unknown",
+      "vhost": "/",
+      "destination": "unknown",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": { }
+    },
+    {
+      "source": "incoming",
+      "vhost": "/",
+      "destination": "incoming",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": { }
+    }
+  ]
+}
