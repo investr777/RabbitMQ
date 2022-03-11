@@ -1,9 +1,6 @@
 package net.its.rmq.cmn.rabbitmq.config;
 
 import com.rabbitmq.client.ConnectionFactory;
-import net.its.rmq.cmn.rabbitmq.MessageProcessor;
-import net.its.rmq.cmn.rabbitmq.consumer.factory.DefaultMessageConsumerFactory;
-import net.its.rmq.cmn.rabbitmq.consumer.factory.MessageConsumerFactory;
 import net.its.rmq.cmn.rabbitmq.pool.DefaultRabbitmqChannelPool;
 import net.its.rmq.cmn.rabbitmq.pool.RabbitmqChannelPool;
 import net.its.rmq.cmn.rabbitmq.publisher.DefaultMessagePublisher;
@@ -26,7 +23,6 @@ public class RabbitmqConfig {
             .build();
     }
 
-
     @Bean
     ConnectionFactory connectionFactory(RabbitmqProperties prop) {
 
@@ -42,12 +38,6 @@ public class RabbitmqConfig {
     RabbitmqChannelPool channelPool(ConnectionFactory connectionFactory) {
 
         return DefaultRabbitmqChannelPool.create(connectionFactory);
-    }
-
-    @Bean
-    MessageConsumerFactory messageConsumerFactory(MessageProcessor messageProcessor) {
-
-        return new DefaultMessageConsumerFactory(messageProcessor);
     }
 
     @Bean
