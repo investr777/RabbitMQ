@@ -1,5 +1,5 @@
 import deps.ExternalDeps.Spring
-import deps.ExternalDeps.rabbitmq
+import deps.ExternalDeps.rabbitmqClient
 import deps.ProjectDeps.cmnDomain
 
 plugins {
@@ -9,7 +9,7 @@ plugins {
 dependencies {
 
     implementation(Spring.Bom.context)
-    implementation(rabbitmq)
+    implementation(rabbitmqClient)
 
     implementation(project(cmnDomain))
 }
