@@ -1,10 +1,14 @@
 package net.its.rmq.border.validator.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import net.its.rmq.border.validator.services.BorderCorridorService;
-import net.its.rmq.border.validator.services.DefaultBorderCorridorService;
+import net.its.rmq.border.validator.services.CarBorderCorridorService;
 import net.its.rmq.border.validator.services.DefaultMessageProcessor;
+import net.its.rmq.border.validator.services.PersonBorderCorridorService;
+import net.its.rmq.cmn.domain.Car;
+import net.its.rmq.cmn.domain.Person;
 import net.its.rmq.cmn.rabbitmq.MessageProcessor;
 import net.its.rmq.cmn.rabbitmq.consumer.DefaultMessageReceiverProcessor;
 import net.its.rmq.cmn.rabbitmq.consumer.MessageReceiverProcessor;
@@ -25,30 +29,37 @@ public class MainConfig {
     @Bean
     ObjectMapper objectMapper() {
 
-        return new ObjectMapper();
+        return new ObjectMapper()
+            .enable(
+                DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
+                DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES
+            )
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
 
     @Bean
-    BorderCorridorService carBorderCorridorService(
+    BorderCorridorService<Car> carBorderCorridorService(
         BorderValidatorProperties borderValidatorProperties,
-        MessagePublisher messagePublisher
+        MessagePublisher messagePublisher,
+        BorderCorridorService<Person> personBorderCorridorService
     ) {
 
-        return new DefaultBorderCorridorService(
+        return new CarBorderCorridorService(
             borderValidatorProperties.getBorderCorridorExchange(),
             borderValidatorProperties.getCarRoutingKey(),
             messagePublisher,
-            objectMapper()
+            objectMapper(),
+            personBorderCorridorService
         );
     }
 
     @Bean
-    BorderCorridorService personBorderCorridorService(
+    BorderCorridorService<Person> personBorderCorridorService(
         BorderValidatorProperties borderValidatorProperties,
         MessagePublisher messagePublisher
     ) {
 
-        return new DefaultBorderCorridorService(
+        return new PersonBorderCorridorService(
             borderValidatorProperties.getBorderCorridorExchange(),
             borderValidatorProperties.getPersonRoutingKey(),
             messagePublisher,
@@ -58,8 +69,8 @@ public class MainConfig {
 
     @Bean
     MessageProcessor messageProcessor(
-        BorderCorridorService carBorderCorridorService,
-        BorderCorridorService personBorderCorridorService
+        BorderCorridorService<Car> carBorderCorridorService,
+        BorderCorridorService<Person> personBorderCorridorService
     ) {
 
         return new DefaultMessageProcessor(
