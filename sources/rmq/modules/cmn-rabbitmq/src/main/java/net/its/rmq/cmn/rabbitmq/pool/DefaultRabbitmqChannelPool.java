@@ -68,7 +68,11 @@ public class DefaultRabbitmqChannelPool implements RabbitmqChannelPool {
             }
         }
 
-        return channelPool.poll();
+        val channel = channelPool.poll();
+
+        usedChannels.add(channel);
+
+        return channel;
     }
 
     @Override

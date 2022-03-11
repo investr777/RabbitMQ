@@ -1,22 +1,23 @@
 package net.its.rmq.cmn.rabbitmq.publisher;
 
-import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import net.its.rmq.cmn.rabbitmq.pool.RabbitmqChannelPool;
 
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultMessagePublisher implements MessagePublisher {
 
-    private final String exchange;
-    private final String routingKey;
-    private final Channel channel;
+    private final RabbitmqChannelPool channelPool;
 
     @Override
-    public void publish(byte[] message) {
+    public void publish(String exchange, String routingKey, byte[] message) {
 
         try {
+            val channel = channelPool.getChannel();
             channel.basicPublish(exchange, routingKey, null, message);
+            channelPool.releaseChannel(channel);
         } catch (Exception ex) {
             log.error("Unable to publish message, exchange %s, routingKey: %s", exchange, routingKey);
         }

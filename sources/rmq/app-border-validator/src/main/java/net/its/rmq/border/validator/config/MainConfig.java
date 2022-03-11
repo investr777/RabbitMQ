@@ -2,15 +2,15 @@ package net.its.rmq.border.validator.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
-import net.its.rmq.cmn.rabbitmq.MessageProcessor;
-import net.its.rmq.cmn.rabbitmq.pool.RabbitmqChannelPool;
-import net.its.rmq.cmn.rabbitmq.consumer.factory.MessageConsumerFactory;
-import net.its.rmq.cmn.rabbitmq.publisher.factory.MessagePublisherFactory;
 import net.its.rmq.border.validator.services.BorderCorridorService;
-import net.its.rmq.cmn.rabbitmq.consumer.MessageReceiverProcessor;
 import net.its.rmq.border.validator.services.DefaultBorderCorridorService;
-import net.its.rmq.cmn.rabbitmq.consumer.DefaultMessageReceiverProcessor;
 import net.its.rmq.border.validator.services.DefaultMessageProcessor;
+import net.its.rmq.cmn.rabbitmq.MessageProcessor;
+import net.its.rmq.cmn.rabbitmq.consumer.DefaultMessageReceiverProcessor;
+import net.its.rmq.cmn.rabbitmq.consumer.MessageReceiverProcessor;
+import net.its.rmq.cmn.rabbitmq.consumer.factory.MessageConsumerFactory;
+import net.its.rmq.cmn.rabbitmq.pool.RabbitmqChannelPool;
+import net.its.rmq.cmn.rabbitmq.publisher.MessagePublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,13 +29,13 @@ public class MainConfig {
     @Bean
     BorderCorridorService carBorderCorridorService(
         BorderValidatorProperties borderValidatorProperties,
-        MessagePublisherFactory messagePublisherFactory
+        MessagePublisher messagePublisher
     ) {
 
         return new DefaultBorderCorridorService(
             borderValidatorProperties.getBorderCorridorExchange(),
             borderValidatorProperties.getCarRoutingKey(),
-            messagePublisherFactory,
+            messagePublisher,
             objectMapper()
         );
     }
@@ -43,13 +43,13 @@ public class MainConfig {
     @Bean
     BorderCorridorService personBorderCorridorService(
         BorderValidatorProperties borderValidatorProperties,
-        MessagePublisherFactory messagePublisherFactory
+        MessagePublisher messagePublisher
     ) {
 
         return new DefaultBorderCorridorService(
             borderValidatorProperties.getBorderCorridorExchange(),
             borderValidatorProperties.getPersonRoutingKey(),
-            messagePublisherFactory,
+            messagePublisher,
             objectMapper()
         );
     }
