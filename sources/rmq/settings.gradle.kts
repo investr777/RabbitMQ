@@ -4,5 +4,6 @@ include(
     "app-border-validator",
     "app-incoming-handler",
     ":modules:cmn-domain",
-    ":modules:cmn-rabbitmq"
+    ":modules:cmn-rabbitmq",
+    "app-messages-handler"
 )

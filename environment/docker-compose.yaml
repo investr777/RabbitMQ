@@ -3,10 +3,13 @@ version: "3.9"
 services:
   rabbitmq:
     container_name: rabbitmq
+    hostname: rabbitmq
     restart: always
     build: rabbitmq/
     ports:
       - 15672:15672
+    networks:
+      - border_network
 
   border_validator:
     depends_on:
@@ -23,7 +26,25 @@ services:
       BORDER_CORRIDOR_EXCHANGE: border_corridor
       PERSON_ROUTING_KEY: person.cmn
       CAR_ROUTING_KEY: car.cmn
+    networks:
+      - border_network
 
+  messages-handler:
+    depends_on:
+      - rabbitmq
+    container_name: messages_handler
+    restart: always
+    build: ../sources/rmq/app-messages-handler/
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: rabbit
+      RABBITMQ_PASSWORD: mq_password
+      CAR_QUEUE_NAME: car
+      PEOPLE_QUEUE_NAME: person
+    networks:
+      - border_network
+      -
   incoming:
     depends_on:
       - rabbitmq
@@ -36,3 +57,10 @@ services:
       RABBITMQ_USERNAME: rabbit
       RABBITMQ_PASSWORD: mq_password
       INCOMING_EXCHANGE: incoming_handler
+
+networks:
+  border_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.1.0/24

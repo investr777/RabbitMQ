@@ -12,6 +12,7 @@ import net.its.rmq.cmn.domain.Person;
 import net.its.rmq.cmn.rabbitmq.MessageProcessor;
 import net.its.rmq.cmn.rabbitmq.consumer.DefaultMessageReceiverProcessor;
 import net.its.rmq.cmn.rabbitmq.consumer.MessageReceiverProcessor;
+import net.its.rmq.cmn.rabbitmq.consumer.factory.DefaultMessageConsumerFactory;
 import net.its.rmq.cmn.rabbitmq.consumer.factory.MessageConsumerFactory;
 import net.its.rmq.cmn.rabbitmq.pool.RabbitmqChannelPool;
 import net.its.rmq.cmn.rabbitmq.publisher.MessagePublisher;
@@ -78,6 +79,12 @@ public class MainConfig {
             carBorderCorridorService,
             personBorderCorridorService
         );
+    }
+
+    @Bean
+    MessageConsumerFactory messageConsumerFactory(MessageProcessor messageProcessor) {
+
+        return new DefaultMessageConsumerFactory(messageProcessor);
     }
 
     @Bean
