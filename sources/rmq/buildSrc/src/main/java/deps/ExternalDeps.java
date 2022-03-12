@@ -17,6 +17,7 @@ public class ExternalDeps {
             public static String starter = "org.springframework.boot:spring-boot-starter";
             public static String starterWeb = "org.springframework.boot:spring-boot-starter-web";
             public static String starterDataJpa = "org.springframework.boot:spring-boot-starter-data-jpa";
+            public static String starterValidation = "org.springframework.boot:spring-boot-starter-validation";
             public static String context = "org.springframework:spring-context";
         }
     }

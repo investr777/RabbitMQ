@@ -1,5 +1,7 @@
 package net.its.rmq.mng.api.config;
 
+import net.its.rmq.mng.api.config.properties.DataSourceProperties;
+import net.its.rmq.mng.api.config.properties.ManagementApiProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;

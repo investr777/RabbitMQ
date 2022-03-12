@@ -10,4 +10,6 @@ public interface CarDao extends JpaRepository<CarEntity, String> {
     List<CarEntity> findAll();
 
     Optional<CarEntity> findByVin(String vin);
+
+    Optional<CarEntity> findByNumberPlate(String numberPlate);
 }
