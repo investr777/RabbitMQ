@@ -11,6 +11,7 @@ public class ExternalDeps {
         // spring-version is configured via bom
         public static class Bom {
             public static String starter = "org.springframework.boot:spring-boot-starter";
+            public static String starterWeb = "org.springframework.boot:spring-boot-starter-web";
             public static String context = "org.springframework:spring-context";
         }
     }
