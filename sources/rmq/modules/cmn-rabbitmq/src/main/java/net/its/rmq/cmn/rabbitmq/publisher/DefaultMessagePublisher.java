@@ -19,7 +19,7 @@ public class DefaultMessagePublisher implements MessagePublisher {
             channel.basicPublish(exchange, routingKey, null, message);
             channelPool.releaseChannel(channel);
         } catch (Exception ex) {
-            log.error("Unable to publish message, exchange %s, routingKey: %s", exchange, routingKey);
+            log.error("Unable to publish message, exchange " + exchange + ", routingKey: " + routingKey, ex);
         }
     }
 }
