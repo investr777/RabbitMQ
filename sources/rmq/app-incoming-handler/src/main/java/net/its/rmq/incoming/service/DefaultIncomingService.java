@@ -14,7 +14,9 @@ public class DefaultIncomingService implements IncomingService {
     public void send(byte[] message) {
 
         try {
+            System.out.println("exchange" + exchange);
             publisher.publish(exchange, null, message);
+
         } catch (Exception ex) {
             throw new IncomingServiceException("Incoming message sending failed", ex);
         }

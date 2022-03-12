@@ -88,7 +88,8 @@ services:
 
   incoming:
     depends_on:
-      - rabbitmq
+      postgres:
+        condition: service_healthy
     container_name: incoming
     restart: always
     build: ../sources/rmq/app-incoming-handler/
@@ -97,7 +98,9 @@ services:
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: rabbit
       RABBITMQ_PASSWORD: mq_password
-      INCOMING_EXCHANGE: incoming_handler
+      INCOMING_EXCHANGE: incoming
+    ports:
+      - 8080:8080
     networks:
       - border_network
 
