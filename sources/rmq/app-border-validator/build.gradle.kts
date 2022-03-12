@@ -9,8 +9,7 @@ plugins {
 dependencies {
 
     implementation(Spring.Bom.starter)
-    implementation(rabbitmq)
-    implementation(jackson)
+    implementation(jacksonCore)
 
     implementation(project(cmnDomain))
     implementation(project(cmnRabbitmq))

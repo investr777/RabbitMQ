@@ -3,9 +3,13 @@ version: "3.9"
 services:
   rabbitmq:
     container_name: rabbitmq
-    hostname: rabbitmq
     restart: always
     build: rabbitmq/
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q check_running" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - 15672:15672
     networks:
@@ -13,7 +17,8 @@ services:
 
   border_validator:
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     container_name: border_validator
     restart: always
     build: ../sources/rmq/app-border-validator/
@@ -31,7 +36,8 @@ services:
 
   messages-handler:
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     container_name: messages_handler
     restart: always
     build: ../sources/rmq/app-messages-handler/
@@ -41,7 +47,40 @@ services:
       RABBITMQ_USERNAME: rabbit
       RABBITMQ_PASSWORD: mq_password
       CAR_QUEUE_NAME: car
-      PEOPLE_QUEUE_NAME: person
+      PERSON_QUEUE_NAME: person
+    networks:
+      - border_network
+
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:14.2
+    environment:
+      POSTGRES_USER: management
+      POSTGRES_PASSWORD: postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U management" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5432:5432
+    networks:
+      - border_network
+
+  management_api:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    container_name: management_api
+    restart: always
+    build: ../sources/rmq/app-management-api/
+    environment:
+      MANAGEMENT_DB_URL: jdbc:postgresql://postgres:5432/postgres
+      MANAGEMENT_DB_USERNAME: management
+      MANAGEMENT_DB_PASSWORD: postgresql
+    ports:
+      - 8081:8080
     networks:
       - border_network
 

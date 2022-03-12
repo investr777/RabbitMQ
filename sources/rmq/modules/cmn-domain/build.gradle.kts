@@ -1,6 +1,6 @@
-import deps.ExternalDeps.jackson
+import deps.ExternalDeps.jacksonCore
 
 dependencies {
 
-    implementation(jackson)
+    implementation(jacksonCore)
 }
