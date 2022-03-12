@@ -12,16 +12,14 @@ import org.springframework.context.annotation.Configuration;
 public class MainConfig {
 
     @Bean
-    IncomingService defaultIncomingServiceService(
+    IncomingService incomingService(
         IncomingProperties incomingProperties,
         MessagePublisher messagePublisher
     ) {
 
         return new DefaultIncomingService(
             incomingProperties.getIncomingExchange(),
-            incomingProperties.getIncomingRoutingKey(),
             messagePublisher
         );
     }
-
 }

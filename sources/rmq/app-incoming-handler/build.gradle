@@ -7,7 +7,6 @@ plugins {
 
 dependencies {
 
-    implementation(Spring.Bom.starter)
     implementation(Spring.Bom.starterWeb)
     implementation(project(ProjectDeps.cmnRabbitmq))
 }

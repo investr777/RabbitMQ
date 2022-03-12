@@ -17,7 +17,6 @@ public class PropertiesConfig {
         return IncomingProperties.builder()
             .rabbitmqProperties(rabbitmqProperties)
             .incomingExchange(env.getRequiredProperty("INCOMING_EXCHANGE"))
-            .incomingRoutingKey(env.getRequiredProperty("INCOMING_ROUTING_KEY"))
             .build();
     }
 }

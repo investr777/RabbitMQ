@@ -1,14 +1,16 @@
 package net.its.rmq.incoming.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import net.its.rmq.incoming.exception.IncomingServiceException;
 import net.its.rmq.incoming.service.IncomingService;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,21 +19,17 @@ public class IncomingController {
     private final IncomingService publisher;
     private final ObjectMapper objectMapper;
 
-    @GetMapping("/incoming/{text}")
-    public String getIncoming(@PathVariable("text") String text) throws IOException {
+    @PostMapping("/incoming/{text}")
+    @ResponseStatus(HttpStatus.OK)
+    public void getIncoming(@PathVariable("text") String text) {
 
-        val message = objectMapper.writeValueAsBytes(text);
+        try {
+            val message = objectMapper.writeValueAsBytes(text);
+            publisher.send(message);
 
-        publisher.send(message);
+        } catch (JsonProcessingException e) {
+            throw new IncomingServiceException("Can't convert incoming message", e);
+        }
 
-        return "Success";
     }
-
-    @GetMapping("/defaultExchange/{text}")
-    public String defaultExchange(@PathVariable("text") String text) {
-
-
-        return "Success";
-    }
-
 }
