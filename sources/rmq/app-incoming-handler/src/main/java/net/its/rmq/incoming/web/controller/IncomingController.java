@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import net.its.rmq.incoming.exception.IncomingServiceException;
+import net.its.rmq.incoming.exception.IncomingMessageParseException;
 import net.its.rmq.incoming.service.IncomingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/incoming")
+@RequestMapping("/api/incoming")
 public class IncomingController {
 
     private final IncomingService publisher;
@@ -27,18 +27,12 @@ public class IncomingController {
     public void postIncoming(@RequestBody String text) {
 
         try {
-            System.out.println(text);
-
             val message = objectMapper.writeValueAsBytes(text);
-
-            System.out.println(message);
-
             publisher.send(message);
 
         } catch (JsonProcessingException e) {
-            throw new IncomingServiceException("Can't convert incoming message", e);
+            throw new IncomingMessageParseException("Can't convert incoming message", e);
         }
-
     }
 
     @GetMapping
@@ -46,16 +40,11 @@ public class IncomingController {
     public void getIncoming(@RequestBody String text) {
 
         try {
-            System.out.println(text);
             val message = objectMapper.writeValueAsBytes(text);
-
-            System.out.println(message);
-
             publisher.send(message);
 
         } catch (JsonProcessingException e) {
-            throw new IncomingServiceException("Can't convert incoming message", e);
+            throw new IncomingMessageParseException("Can't convert incoming message", e);
         }
-
     }
 }

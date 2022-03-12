@@ -1,5 +1,5 @@
 import deps.ExternalDeps.Spring
-import deps.ProjectDeps
+import deps.ProjectDeps.cmnRabbitmq
 
 plugins {
     id("spring-app-conventions")
@@ -8,5 +8,5 @@ plugins {
 dependencies {
 
     implementation(Spring.Bom.starterWeb)
-    implementation(project(ProjectDeps.cmnRabbitmq))
+    implementation(project(cmnRabbitmq))
 }

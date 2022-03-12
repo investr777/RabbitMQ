@@ -10,12 +10,13 @@ public class DefaultIncomingService implements IncomingService {
     private final String exchange;
     private final MessagePublisher publisher;
 
+    private final static String EMPTY_ROUTING_KEY = "";
+
     @Override
     public void send(byte[] message) {
 
         try {
-            System.out.println("exchange" + exchange);
-            publisher.publish(exchange, null, message);
+            publisher.publish(exchange, EMPTY_ROUTING_KEY, message);
 
         } catch (Exception ex) {
             throw new IncomingServiceException("Incoming message sending failed", ex);
