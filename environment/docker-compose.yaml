@@ -31,6 +31,8 @@ services:
       BORDER_CORRIDOR_EXCHANGE: border_corridor
       PERSON_ROUTING_KEY: person.cmn
       CAR_ROUTING_KEY: car.cmn
+      BLOCKED_PERSON_ROUTING_KEY: person.blocked
+      BLOCKED_CAR_ROUTING_KEY: car.blocked
     networks:
       - border_network
 
