@@ -17,7 +17,6 @@ public class DefaultIncomingService implements IncomingService {
 
         try {
             publisher.publish(exchange, EMPTY_ROUTING_KEY, message);
-
         } catch (Exception ex) {
             throw new IncomingServiceException("Incoming message sending failed", ex);
         }

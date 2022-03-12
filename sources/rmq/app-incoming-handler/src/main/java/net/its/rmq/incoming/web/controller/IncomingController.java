@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/incoming")
+@RequestMapping("/incoming")
 public class IncomingController {
 
     private final IncomingService publisher;
@@ -29,7 +29,6 @@ public class IncomingController {
         try {
             val message = objectMapper.writeValueAsBytes(text);
             publisher.send(message);
-
         } catch (JsonProcessingException e) {
             throw new IncomingMessageParseException("Can't convert incoming message", e);
         }

@@ -33,6 +33,4 @@ public class IncomingExceptionHandler {
             .status(BAD_REQUEST)
             .body(new ErrorResponse("Incoming message parsing failed"));
     }
-
-
 }
