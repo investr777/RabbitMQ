@@ -44,7 +44,7 @@ services:
       PEOPLE_QUEUE_NAME: person
     networks:
       - border_network
-      -
+
   incoming:
     depends_on:
       - rabbitmq
@@ -57,6 +57,8 @@ services:
       RABBITMQ_USERNAME: rabbit
       RABBITMQ_PASSWORD: mq_password
       INCOMING_EXCHANGE: incoming_handler
+    networks:
+      - border_network
 
 networks:
   border_network:
