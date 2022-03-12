@@ -36,6 +36,20 @@
       "durable": true,
       "auto_delete": false,
       "arguments": { "x-message-ttl": 86400000, "x-queue-type": "classic" }
+    },
+    {
+      "name": "blocked_car",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-message-ttl": 86400000, "x-queue-type": "classic" }
+    },
+    {
+      "name": "blocked_person",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": { "x-message-ttl": 86400000, "x-queue-type": "classic" }
     }
   ],
   "exchanges": [
@@ -73,7 +87,7 @@
       "vhost": "/",
       "destination": "car",
       "destination_type": "queue",
-      "routing_key": "car.*",
+      "routing_key": "car.cmn",
       "arguments": { }
     },
     {
@@ -81,7 +95,23 @@
       "vhost": "/",
       "destination": "person",
       "destination_type": "queue",
-      "routing_key": "person.*",
+      "routing_key": "person.cmn",
+      "arguments": { }
+    },
+    {
+      "source": "border_corridor",
+      "vhost": "/",
+      "destination": "blocked_car",
+      "destination_type": "queue",
+      "routing_key": "car.blocked",
+      "arguments": { }
+    },
+    {
+      "source": "border_corridor",
+      "vhost": "/",
+      "destination": "blocked_person",
+      "destination_type": "queue",
+      "routing_key": "person.blocked",
       "arguments": { }
     },
     {
