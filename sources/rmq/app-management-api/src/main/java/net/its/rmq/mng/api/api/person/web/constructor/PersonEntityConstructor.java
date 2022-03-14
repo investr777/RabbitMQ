@@ -10,7 +10,7 @@ public class PersonEntityConstructor {
 
         val entity = new PersonEntity();
 
-        entity.setIdentifier(inResource.id());
+        entity.setIdentifier(inResource.identifier());
         entity.setFirstName(inResource.firstName());
         entity.setLastName(inResource.lastName());
         entity.setAddress(inResource.address());
