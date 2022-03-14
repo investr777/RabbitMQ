@@ -8,8 +8,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +22,7 @@ import javax.persistence.Table;
 public class PersonEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid")
+    @GeneratedValue(generator = "uuid", strategy = IDENTITY)
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
