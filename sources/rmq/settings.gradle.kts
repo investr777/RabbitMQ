@@ -7,6 +7,5 @@ include(
     "app-management-api",
     ":modules:cmn-domain",
     ":modules:cmn-dao",
-    ":modules:cmn-rabbitmq",
-    "app-messages-handler"
+    ":modules:cmn-rabbitmq"
 )
