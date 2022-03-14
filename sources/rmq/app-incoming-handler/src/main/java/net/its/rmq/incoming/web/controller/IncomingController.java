@@ -18,7 +18,7 @@ public class IncomingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void postIncoming(@RequestBody String text) {
+    public void postIncoming(@RequestBody byte[] text) {
 
          publisher.send(text);
     }
