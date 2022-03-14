@@ -19,6 +19,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      postgres:
+        condition: service_healthy
     container_name: border_validator
     restart: always
     build: ../sources/rmq/app-border-validator/
@@ -33,6 +35,9 @@ services:
       CAR_ROUTING_KEY: car.cmn
       BLOCKED_PERSON_ROUTING_KEY: person.blocked
       BLOCKED_CAR_ROUTING_KEY: car.blocked
+      MANAGEMENT_DB_URL: jdbc:postgresql://postgres:5432/postgres
+      MANAGEMENT_DB_USERNAME: management
+      MANAGEMENT_DB_PASSWORD: postgresql
     networks:
       - border_network
 

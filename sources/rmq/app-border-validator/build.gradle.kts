@@ -1,6 +1,5 @@
 import deps.ExternalDeps.*
-import deps.ProjectDeps.cmnDomain
-import deps.ProjectDeps.cmnRabbitmq
+import deps.ProjectDeps.*
 
 plugins {
     id("spring-app-conventions")
@@ -8,9 +7,11 @@ plugins {
 
 dependencies {
 
-    implementation(Spring.Bom.starter)
-    implementation(jacksonCore)
-
+    implementation(project(cmnDao))
     implementation(project(cmnDomain))
     implementation(project(cmnRabbitmq))
+
+    implementation(Spring.Bom.starterDataJpa)
+    implementation(jacksonCore)
+    implementation(postgresql)
 }
