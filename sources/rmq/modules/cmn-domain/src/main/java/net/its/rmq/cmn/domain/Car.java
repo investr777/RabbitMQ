@@ -15,5 +15,4 @@ public record Car(
     Person owner,
     List<Person> passengers
 ) implements Migrant {
-
 }

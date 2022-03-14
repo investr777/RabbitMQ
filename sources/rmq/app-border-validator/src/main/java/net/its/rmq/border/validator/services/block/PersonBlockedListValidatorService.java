@@ -21,15 +21,15 @@ public class PersonBlockedListValidatorService implements BlockedListValidatorSe
     @Override
     public void check(Person migrant) throws BlockedListValidatorServiceException {
 
-        if (personDao.findByIdentifier(migrant.id()).isEmpty()) return;
+        if (personDao.findByIdentifier(migrant.identifier()).isEmpty()) return;
 
         try {
             val message = objectMapper.writeValueAsBytes(migrant);
             publisher.publish(exchange, routingKey, message);
         } catch (Exception ex) {
-            throw new UnablePassToBlockedQueueException(ex, migrant);
+            throw new UnablePassToBlockedQueueException(ex);
         }
 
-        throw new BlockedListValidatorServiceException("Person exists in blocked list", migrant);
+        throw new BlockedListValidatorServiceException("Person exists in blocked list");
     }
 }

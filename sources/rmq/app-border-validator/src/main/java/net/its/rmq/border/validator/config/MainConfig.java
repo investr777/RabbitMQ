@@ -3,13 +3,13 @@ package net.its.rmq.border.validator.config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
-import net.its.rmq.border.validator.services.block.BlockedListValidatorService;
-import net.its.rmq.border.validator.services.block.CarBlockedListValidatorService;
-import net.its.rmq.border.validator.services.block.PersonBlockedListValidatorService;
 import net.its.rmq.border.validator.services.BorderCorridorService;
 import net.its.rmq.border.validator.services.CarBorderCorridorService;
 import net.its.rmq.border.validator.services.DefaultMessageProcessor;
 import net.its.rmq.border.validator.services.PersonBorderCorridorService;
+import net.its.rmq.border.validator.services.block.BlockedListValidatorService;
+import net.its.rmq.border.validator.services.block.CarBlockedListValidatorService;
+import net.its.rmq.border.validator.services.block.PersonBlockedListValidatorService;
 import net.its.rmq.cmn.dao.PersistenceConfig;
 import net.its.rmq.cmn.dao.car.CarDao;
 import net.its.rmq.cmn.dao.person.PersonDao;
@@ -53,7 +53,8 @@ public class MainConfig {
     BorderCorridorService<Car> carBorderCorridorService(
         BorderValidatorProperties borderValidatorProperties,
         MessagePublisher messagePublisher,
-        BorderCorridorService<Person> personBorderCorridorService
+        BorderCorridorService<Person> personBorderCorridorService,
+        BlockedListValidatorService<Car> carBlockedListValidatorService
     ) {
 
         return new CarBorderCorridorService(
@@ -61,6 +62,7 @@ public class MainConfig {
             borderValidatorProperties.getCarRoutingKey(),
             messagePublisher,
             objectMapper(),
+            carBlockedListValidatorService,
             personBorderCorridorService
         );
     }
@@ -68,14 +70,16 @@ public class MainConfig {
     @Bean
     BorderCorridorService<Person> personBorderCorridorService(
         BorderValidatorProperties borderValidatorProperties,
-        MessagePublisher messagePublisher
+        MessagePublisher messagePublisher,
+        BlockedListValidatorService<Person> personBlockedListValidatorService
     ) {
 
         return new PersonBorderCorridorService(
             borderValidatorProperties.getBorderCorridorExchange(),
             borderValidatorProperties.getPersonRoutingKey(),
             messagePublisher,
-            objectMapper()
+            objectMapper(),
+            personBlockedListValidatorService
         );
     }
 
@@ -99,8 +103,7 @@ public class MainConfig {
     BlockedListValidatorService<Car> carBlockedListCheckerService(
         CarDao carDao,
         BorderValidatorProperties borderValidatorProperties,
-        MessagePublisher messagePublisher,
-        BorderCorridorService<Person> personBorderCorridorService
+        MessagePublisher messagePublisher
     ) {
 
         return new CarBlockedListValidatorService(
@@ -108,25 +111,20 @@ public class MainConfig {
             borderValidatorProperties.getBorderCorridorExchange(),
             borderValidatorProperties.getBlockedCarRoutingKey(),
             messagePublisher,
-            objectMapper(),
-            personBorderCorridorService
+            objectMapper()
         );
     }
 
     @Bean
     MessageProcessor messageProcessor(
         BorderCorridorService<Car> carBorderCorridorService,
-        BorderCorridorService<Person> personBorderCorridorService,
-        BlockedListValidatorService<Car> carBlockedListValidatorService,
-        BlockedListValidatorService<Person> personBlockedListValidatorService
+        BorderCorridorService<Person> personBorderCorridorService
     ) {
 
         return new DefaultMessageProcessor(
             objectMapper(),
             carBorderCorridorService,
-            personBorderCorridorService,
-            carBlockedListValidatorService,
-            personBlockedListValidatorService
+            personBorderCorridorService
         );
     }
 

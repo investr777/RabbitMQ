@@ -8,4 +8,4 @@ cd ../sources/rmq/
 cd $ENVIRONMENT_DIR
 
 docker-compose -f docker-compose.yaml build
-docker-compose -f docker-compose.yaml up -d
+docker-compose -f docker-compose.yaml up

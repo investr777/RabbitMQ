@@ -9,7 +9,7 @@ public record PersonInResource(
     @NotNull
     @NotBlank
     @Size(max = 36)
-    String id,
+    String identifier,
 
     @NotNull
     @NotBlank

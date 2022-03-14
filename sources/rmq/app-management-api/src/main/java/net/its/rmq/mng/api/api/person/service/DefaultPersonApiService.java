@@ -25,7 +25,7 @@ public class DefaultPersonApiService implements PersonApiService {
     @Override
     public PersonOutResource create(PersonInResource inResource) {
 
-        isUniqueIdentifier(inResource.id());
+        isUniqueIdentifier(inResource.identifier());
 
         val entity = entityConstructor.construct(inResource);
 
